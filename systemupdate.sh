@@ -9,13 +9,12 @@
 # files.
 
 for pkg in apt dnf pacman rpm yum; do
-    if which $pkg >/dev/null; then {
+    if command -v $pkg >/dev/null; then {
         pkgmgr=$pkg
     } fi
     done
 
 apt_update(){
-    snap refresh
     apt update
     apt -y upgrade
     apt -y autoremove
@@ -27,6 +26,10 @@ dnf_update(){
     sudo dnf autoremove
     sudo dnf clean all
 }
+
+if command -v snap >/dev/null; then {
+    snap refresh
+} fi
 
 if [ $pkgmgr = apt ]; then {
     apt_update
