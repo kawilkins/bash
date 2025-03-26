@@ -5,6 +5,7 @@ Linux Cheatsheet
 - [User Management](#User-Management)
 - [SSH Key Generation](#SSH-Key-Generation)
 - [Creating a tarball/archive](#creating-a-tarball-archive-file)
+- [Add customer service to systemd](#add-customer-service-to-systemd)
 
 # User Management 
 
@@ -187,3 +188,82 @@ tar -xzvf nameoffile.tar.gz -C /path/to/destination/
 ```
 
 Where `-C` changes the target directory to the directory path specified.
+
+# Add customer service to systemd
+
+Sometimes you might want to add a custom daemon to systemd that auto runs.
+This instruction will use an example for writing a service file to run an application.
+
+1. Create a unit file
+
+The unit file will **always** include `.service`.
+Example: `myunit.service`.
+In the below example unit file we are setting up a systemd service file to start after *reboot* and after detecting that the network is online.
+
+```
+[Unit]
+Description=Start my app after reboot
+After=network-online.target
+
+[Service]
+ExecStart=/path/to/myapp
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+```
+
+In the above example we have three important aspects of the unit file.
+
+- **[Unit]**: This defines the unit file and when it should activate.
+- **[Service]**: This defines the command that should be run, by what user, and if it should always restart.
+- **[Install]**: This defines what the unit is being requested by.
+
+While the *Description* is not necessary, it is best practice to describe what the unit file should do.
+We definte the *User* as **root** because we want the unit to be run by **root**.
+Defining `multi-user.target` is a good practice because it ensures that the service starts in a state where the system is operational, but without a graphical user interface (GUI).
+
+2. Add to systemd
+
+To add to systemd move or copy the unit file you created into the `/etc/systemd/system` directory.
+You may also create a symlink using the command `ln -s /path/to/app myunit.service`.
+
+3. Restart systemd daemon
+
+Next restart the systemd daemon by the following command:
+
+```
+systemctl daemon-reload
+```
+
+This ensures that systemd recognizes `myunit.service` as a service.
+
+4. Test your service
+
+Run the following command:
+
+```
+systemctl start myunit.service
+```
+
+Then run:
+
+```
+systemctl status myunit.service
+```
+
+You will see output that shows that your service is running.
+You will also see log output as well.
+Pay attention to any error messages and troubleshoot as needed.
+
+5. Enable your service
+
+Run the following command:
+
+```
+systemctl enable myunit.service
+```
+
+This will enable the service.
+With the service enabled systemd will automatically start the service at boot.
