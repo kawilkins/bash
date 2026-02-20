@@ -189,7 +189,7 @@ tar -xzvf nameoffile.tar.gz -C /path/to/destination/
 
 Where `-C` changes the target directory to the directory path specified.
 
-# Add customer service to systemd
+# Add custome `systemd` service to systemd
 
 Sometimes you might want to add a custom daemon to systemd that auto runs.
 This instruction will use an example for writing a service file to run an application.
@@ -224,7 +224,7 @@ While the *Description* is not necessary, it is best practice to describe what t
 We definte the *User* as **root** because we want the unit to be run by **root**.
 Defining `multi-user.target` is a good practice because it ensures that the service starts in a state where the system is operational, but without a graphical user interface (GUI).
 
-2. Add to systemd
+2. Add to `systemd`
 
 To add to systemd move or copy the unit file you created into the `/etc/systemd/system` directory.
 You may also create a symlink using the command `ln -s /path/to/app myunit.service`.
