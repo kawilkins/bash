@@ -5,7 +5,7 @@ Linux Cheatsheet
 - [User Management](#User-Management)
 - [SSH Key Generation](#SSH-Key-Generation)
 - [Creating a tarball/archive](#creating-a-tarball-archive-file)
-- [Add customer service to systemd](#add-customer-service-to-systemd)
+- [Add custom service to `systemd`](#add-custom-service-to-systemd)
 
 # User Management 
 
@@ -189,7 +189,7 @@ tar -xzvf nameoffile.tar.gz -C /path/to/destination/
 
 Where `-C` changes the target directory to the directory path specified.
 
-# Add custome `systemd` service to systemd
+# Add custome service to `systemd`
 
 Sometimes you might want to add a custom daemon to systemd that auto runs.
 This instruction will use an example for writing a service file to run an application.
