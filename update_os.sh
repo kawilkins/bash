@@ -5,8 +5,16 @@
 # Description:
 # This script runs fetches new release upgrades for Ubuntu systems.
 
-sudo apt update
-sudo apt upgrade -y
-sudo apt install update-core-manager
-sudo apt install update-manager-core
-do-release-upgrade -d
+set -e
+apt update
+apt upgrade -y
+apt install -y update-manager-core
+
+cat <<EOF >/etc/apt/apt.conf.d/90keep-old
+DPkg::Options {
+    "--force-confdef";
+    "--force-confold";
+};
+EOF
+
+DEBIAN_FRONTEND=noninteractive do-release-upgrade -d
